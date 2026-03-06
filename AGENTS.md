@@ -47,6 +47,15 @@ skills/
 - 优先更新已有 skills，避免重复创建同类 skill。
 - 新增模型专用版本前，先确认是否可通过通用规则覆盖。
 
+## 模板规范
+- 新建 skill 时，默认基于模板文件：
+  - `skills/_template/SKILL.md`
+- 创建流程建议：
+  1. 复制模板到 `skills/<skill-name>/SKILL.md`
+  2. 替换 frontmatter 占位符（`<skill-name>`、`description`）
+  3. 填写“目标/输入/输出/执行步骤/约束/失败与降级/示例”
+  4. 仅在存在明显模型差异时新增 `models/<provider>/SKILL.md`
+
 ## 维护原则
 - 保持 skills 小而可组合。
 - 及时删除过时指令。
