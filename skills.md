@@ -2,10 +2,10 @@
 
 > 本文件用于维护仓库内可用技能目录，不作为变更日志使用。
 
-## 1) sbd-scaffold
-- 名称：`sbd-scaffold`
+## 1) jsbd
+- 名称：`jsbd`
 - 登记日期：`2026-03-06`
-- 路径：`skills/sbd-scaffold/SKILL.md`
+- 路径：`skills/jsbd/SKILL.md`
 - 能力说明：在 Spring Boot Java 项目中，按用户需求最小化创建文档目录或工程目录（DDD 分层骨架）。
 - 参考来源：`https://github.com/Redlotus794/java-spring-boot-ddd-example`
 

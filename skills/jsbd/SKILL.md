@@ -1,5 +1,5 @@
 ---
-name: sbd-scaffold
+name: jsbd
 description: "根据用户指定需求，在 Spring Boot Java 项目中按 DDD 基准结构最小化创建目录或文档。用于创建 docs/ 或 src 分层目录骨架、避免过度生成内容，并支持参考仓库 java-spring-boot-ddd-example。"
 ---
 
