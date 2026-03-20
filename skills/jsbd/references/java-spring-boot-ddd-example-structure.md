@@ -15,12 +15,9 @@
 
 ```text
 <project-root>/
-|-- docs/                              # 按需创建
-|   |-- development/
-|   |   `-- openapi/
-|   |-- requirements/
-|   `-- ops/
-`-- src/                               # 按需创建
+|-- docs/
+|   `-- README.md
+`-- src/
     |-- main/
     |   |-- java/
     |   `-- resources/
@@ -29,107 +26,174 @@
         `-- resources/
 ```
 
-## Java 包路径模版
+## 项目完整目录模版
 
-当用户提供包根路径（例如 `com.example.order`）时，可在 `src/main/java/` 与 `src/test/java/` 下继续展开：
-
-```text
-src/main/java/com/example/order/
-|-- applicationservice/
-|-- domain/
-|   |-- aggregate/
-|   |-- entity/
-|   `-- valueobject/
-|-- infrastructure/
-`-- userinterface/
-```
-
-说明：
-- `applicationservice`、`domain`、`infrastructure`、`userinterface` 仅在用户明确要求时创建。
-- `aggregate`、`entity`、`valueobject` 仅在用户明确要求细分 `domain/` 时创建。
-- 未提供包根路径时，不自动补包层级；最多创建到 `src/main/java/` 或用户指定的直接子目录。
-
-## docs 侧最小映射
-
-适用场景：
-- 用户要补项目文档目录
-- 用户只要 OpenAPI、需求、运维等文档骨架
-
-建议按需映射：
-
-```text
-docs/
-|-- development/
-|   `-- openapi/
-|-- requirements/
-`-- ops/
-```
-
-规则：
-- 如果用户只提到 `docs/development/openapi/`，只创建该路径及必要父目录。
-- 如果用户只要求单个文档文件，例如 `docs/requirements/prd.md`，只创建必要目录并写入最小标题。
-- 不自动补齐 `docs/ai/`、`docs/archive/`、`docs/test/` 等目录，除非用户明确提出。
-
-## engineering 侧最小映射
-
-适用场景：
-- 用户要初始化 Spring Boot 工程目录
-- 用户要补齐 DDD 分层包目录
-
-建议按需映射：
-
-```text
-src/
-|-- main/
-|   |-- java/
-|   `-- resources/
-`-- test/
-    |-- java/
-    `-- resources/
-```
-
-规则：
-- 用户只要求工程基础结构时，只创建 `src/main/java`、`src/main/resources`、`src/test/java`、`src/test/resources`。
-- 用户明确要求 DDD 分层时，再在包路径下创建对应目录。
-- 不生成业务代码、配置文件、实体类、仓储实现或测试代码。
-
-## mixed 场景模版
-
-当用户同时要求 `docs` 与 `engineering` 时，按以下方式处理：
-
-1. 先拆分为文档需求与工程需求。
-2. 分别生成最小创建清单。
-3. 合并去重，只保留必要父目录。
-4. 先创建目录，再创建文件。
-
-示例：
+以下目录基于 `2026-03-20` 拉取的 `main` 分支实际结构整理，已排除 `.git/` 等版本控制内部目录。
 
 ```text
 <project-root>/
-|-- docs/
-|   `-- development/
-|       `-- openapi/
-`-- src/
-    `-- main/
-        `-- java/
-            `-- com/
-                `-- example/
-                    `-- order/
-                        |-- domain/
-                        `-- infrastructure/
+|-- .gitignore                         # Git 忽略规则
+|-- AGENTS.md                          # 仓库代理/协作说明
+|-- CODE_OF_CONDUCT.md                 # 社区行为准则
+|-- CONTRIBUTING.md                    # 贡献规范
+|-- FAQ.md                             # 常见问题
+|-- LICENSE                            # 开源许可证
+|-- README.md                          # 项目总说明
+|-- pom.xml                            # Maven 构建配置
+|-- docs/                              # 项目文档根目录
+|   |-- README.md                      # 文档总入口
+|   |-- ai/                            # AI 相关说明
+|   |   |-- ai.md                      # AI 文档首页
+|   |   `-- prompt/                    # Prompt 参考
+|   |       `-- [ai] prompt.md         # Prompt 模版
+|   |-- archive/                       # 归档文档
+|   |   `-- archive.md                 # 归档说明
+|   |-- dev/                           # 开发文档
+|   |   |-- development.md             # 开发文档入口
+|   |   |-- architecture/              # 架构设计
+|   |   |   `-- [dev] architecture.md  # 架构说明
+|   |   |-- convention/                # 研发约定
+|   |   |   `-- [dev] convention.md    # 规范说明
+|   |   `-- openapi/                   # OpenAPI 文档
+|   |       |-- [dev] openapi.md       # OpenAPI 说明
+|   |       |-- examples/              # OpenAPI 示例
+|   |       |   `-- [dev-openapi] examples.md
+|   |       |-- html/                  # OpenAPI HTML 产物说明
+|   |       |   `-- [dev-openapi] html.md
+|   |       `-- json/                  # OpenAPI JSON 产物说明
+|   |           `-- [dev-openapi] json.md
+|   |-- ops/                           # 运维文档
+|   |   |-- ops.md                     # 运维文档入口
+|   |   |-- automation/                # 自动化运维
+|   |   |   `-- README.md
+|   |   |-- backup-restore/            # 备份与恢复
+|   |   |   `-- README.md
+|   |   |-- changelog/                 # 变更记录
+|   |   |   |-- README.md
+|   |   |   `-- release-note/          # 发布说明
+|   |   |       |-- 1.0.0.RELEASE.md
+|   |   |       `-- [changelog] release-note.md
+|   |   |-- configuration/             # 配置管理
+|   |   |   `-- README.md
+|   |   |-- deployment/                # 部署文档
+|   |   |   |-- README.md
+|   |   |   |-- docker/                # Docker 部署
+|   |   |   |   `-- docker.md
+|   |   |   `-- k8s/                   # Kubernetes 部署
+|   |   |       `-- README.md
+|   |   |-- incident-troubleshooting/  # 事故与排障
+|   |   |   `-- README.md
+|   |   |-- log/                       # 日志管理
+|   |   |   `-- README.md
+|   |   |-- monitor/                   # 监控
+|   |   |   `-- README.md
+|   |   |-- network/                   # 网络相关
+|   |   |   `-- README.md
+|   |   |-- performance/               # 性能优化
+|   |   |   `-- README.md
+|   |   |-- resource-cost/             # 资源成本
+|   |   |   `-- README.md
+|   |   |-- runbook/                   # 运维手册
+|   |   |   `-- README.md
+|   |   |-- security/                  # 安全文档
+|   |   |   `-- README.md
+|   |   `-- storage-data/              # 存储与数据
+|   |       `-- README.md
+|   |-- project-managament/            # 项目管理文档
+|   |   |-- project-management.md      # 项目管理入口
+|   |   |-- meeting-notes/             # 会议纪要
+|   |   |   `-- [pm] meeting-notes.md
+|   |   |-- plans/                     # 计划文档
+|   |   |   `-- [pm] plans.md
+|   |   |-- process/                   # 流程文档
+|   |   |   `-- [pm] process.md
+|   |   |-- risk-management/           # 风险管理
+|   |   |   |-- [pm] risk-management.md
+|   |   |   `-- reference.md
+|   |   |-- roadmap/                   # 路线图
+|   |   |   `-- [pm] project-roadmap.md
+|   |   `-- todo/                      # 待办事项
+|   |       `-- [pm] todo.md
+|   |-- requirements/                  # 需求文档
+|   |   |-- requirements.md            # 需求文档入口
+|   |   |-- backlog/                   # 需求池
+|   |   |   `-- backlog.md
+|   |   |-- product/                   # 产品需求
+|   |   |   |-- [req] product.md
+|   |   |   |-- prd/                   # PRD
+|   |   |   |   `-- [req-product] prd.md
+|   |   |   `-- ul/                    # 用户清单/用户旅程
+|   |   |       `-- [req-product] ul.md
+|   |   |-- prototypes/                # 原型文档
+|   |   |   `-- [req] prototypes.md
+|   |   `-- technical/                 # 技术需求
+|   |       `-- [req] technical.md
+|   |-- template/                      # 模版资源
+|   |   `-- config/                    # 配置模版
+|   |       |-- log4j.properties
+|   |       |-- log4j2.xml
+|   |       |-- logback-spring.xml
+|   |       `-- logging.properties
+|   `-- test/                          # 测试文档
+|       |-- test.md                    # 测试文档入口
+|       |-- case/                      # 测试用例
+|       |   |-- [test] case.md
+|       |   |-- bdd_case_template.md
+|       |   `-- case_template.md
+|       |-- plan/                      # 测试计划
+|       |   `-- [test] plan.md
+|       `-- report/                    # 测试报告
+|           `-- [test] report.md
+`-- src/                               # 源码根目录
+    |-- main/
+    |   `-- java/
+    |       `-- com/
+    |           `-- rdlts/
+    |               `-- jsbs/
+    |                   `-- ddd/
+    |                       |-- Application.java              # Spring Boot 启动类
+    |                       |-- package-info.java            # 顶层包说明
+    |                       |-- applicationservice/          # 应用服务层
+    |                       |   `-- package-info.java
+    |                       |-- domain/                      # 领域层
+    |                       |   |-- package-info.java
+    |                       |   |-- aggregate/               # 聚合
+    |                       |   |   `-- DomainAggregate.java
+    |                       |   |-- entity/                  # 实体
+    |                       |   |   `-- DomainEntity.java
+    |                       |   `-- valueobject/             # 值对象
+    |                       |       `-- ValueObject.java
+    |                       |-- infrastructure/              # 基础设施层
+    |                       |   |-- package-info.java
+    |                       |   `-- repository/              # 仓储相关
+    |                       |       |-- repository.md
+    |                       |       |-- jpa/                 # JPA 仓储
+    |                       |       |   `-- jpa.md
+    |                       |       `-- po/                  # 持久化对象
+    |                       |           `-- po.md
+    |                       `-- userinterface/               # 用户接口层
+    |                           `-- package-info.java
+    `-- test/
+        |-- java/
+        |   `-- com/
+        |       `-- rdlts/
+        |           `-- jsbs/
+        |               `-- ddd/
+        |                   |-- TestApplication.java         # 测试入口类
+        |                   |-- convention.md                # 测试约定
+        |                   `-- package-info.java
+        `-- resources/
+            |-- application-test.yml        # 测试配置
+            |-- dcs-logback-spring.xml      # 测试日志配置
+            |-- resources.md                # 测试资源说明
+            |-- data/                       # 测试数据
+            |   `-- data.md
+            |-- documents/                  # 测试文档
+            |   `-- documents.md
+            `-- images/                     # 测试图片
+                `-- images.md
 ```
 
-## 文档文件最小写入模版
-
-当用户要求创建文档文件但未指定正文时，仅写 1 行标题：
-
-```md
-# <文件主题>
-```
-
-示例：
-- `docs/requirements/prd.md` -> `# PRD`
-- `docs/development/openapi/overview.md` -> `# Overview`
 
 ## 执行时检查点
 
@@ -144,17 +208,18 @@ src/
 
 ## 输出示例
 
+帮我创建运维部署目录
+
 ```text
 已创建目录：
 - docs/
 - docs/development/
-- docs/development/openapi/
-- src/main/java/com/example/order/domain/
 
 已创建文件：
-- docs/development/openapi/overview.md
+- docs/development/README.md
 
 未创建项：
+- docs/development/docker/ （原因：用户未指明要求创建docker部署目录）
 - src/main/java/com/example/order/applicationservice/（原因：用户未要求）
 ```
 
