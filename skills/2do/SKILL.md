@@ -1,6 +1,6 @@
 ---
 name: "2do"
-description: "管理待办事项，支持 backlog、pending、todo、discard、completed 五阶段任务管理。当用户需要创建、移动、整理待办事项或生成任务简报时调用。"
+description: "管理待办事项，支持 backlog、pending、inprogress、discard、completed 五阶段任务管理。当用户需要创建、移动、整理待办事项或生成任务简报时调用。"
 ---
 
 # 2do 待办事项管理
@@ -11,7 +11,7 @@ description: "管理待办事项，支持 backlog、pending、todo、discard、c
 todo/
 ├── backlog/      # 待规划任务
 ├── pending/      # 待开始任务
-├── todo/         # 进行中任务
+├── inprogress/   # 进行中任务
 ├── discard/      # 已取消任务
 ├── completed/    # 已完成任务
 ├── archive/      # 历史简报归档
@@ -36,11 +36,11 @@ references/
 
 ### 任务流转
 - **backlog → pending**: 任务规划完成，准备开始
-- **pending → todo**: 任务开始执行
-- **todo → completed**: 任务完成
-- **todo → pending**: 任务暂停
+- **pending → inprogress**: 任务开始执行
+- **inprogress → completed**: 任务完成
+- **inprogress → pending**: 任务暂停
 - **pending → discard**: 任务取消
-- **todo → discard**: 任务取消
+- **inprogress → discard**: 任务取消
 
 ### 任务模板
 任务模板请参考 `references/task_template.md`
