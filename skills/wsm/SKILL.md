@@ -1,10 +1,10 @@
 ---
 name: wsm
-description: 当用户需要创建、整理、校验或说明统一的项目工作空间目录时使用；用于在项目根目录下建立标准 project 结构，并约束代码、文档、知识和任务等内容的归档位置。
+description: 当用户需要创建、整理、校验或说明统一的项目工作空间目录时使用；用于在当前工作空间内建立标准目录结构，并约束代码、文档、知识和任务等内容的归档位置。
 ---
 
 # 目标
-为项目建立一套统一、清晰、可扩展的 `project/` 工作空间目录规范，并在用户需要时完成初始化、补齐、校验或结构说明。
+为项目建立一套统一、清晰、可扩展的工作空间目录规范，并在用户需要时完成初始化、补齐、校验或结构说明。
 
 边界：
 - 只负责工作空间目录结构与归档规则，不负责生成业务代码或撰写长篇正式内容。
@@ -12,18 +12,17 @@ description: 当用户需要创建、整理、校验或说明统一的项目工�
 
 # 输入
 最小输入：
-- 项目根目录路径，或明确说明以当前目录作为项目根目录
+- 当前工作空间路径，或明确说明以当前目录作为工作空间
 - 操作目标：`init`、`repair`、`audit`、`explain`
 
 可选输入：
-- 是否创建根目录 `project/`
 - 是否初始化 `README.md`
 - 是否初始化 `Agents.md`
 - 是否补充各子目录中的占位文件
 - 用户已有目录结构或命名约束
 
 缺失输入处理规则：
-- 未提供项目根目录时，默认使用当前工作目录。
+- 未提供当前工作空间路径时，默认使用当前工作目录。
 - 未说明操作目标时，默认按 `init` 处理。
 - 未说明是否写入内容时，仅创建目录；`README.md` 只写最小说明。
 
@@ -41,11 +40,11 @@ description: 当用户需要创建、整理、校验或说明统一的项目工�
 
 # 执行步骤
 1. 识别用户目标是初始化、补齐、校验还是解释目录规范。
-2. 以项目根目录为基准，定位或创建 `project/`。
-3. 按以下标准结构执行：
+2. 将当前工作空间视为 `project` 本身；若用户未明确指定路径，默认使用当前工作目录，并先向用户确认“是否以当前工作空间作为 project 根目录”。
+3. 不创建额外的 `project/` 父目录，直接在当前工作空间下按以下标准结构执行：
 
 ```text
-project/
+<workspace>/
 ├── README.md
 ├── Agents.md
 ├── archives/
@@ -81,7 +80,7 @@ project/
 - 不要将正式文档、知识沉淀、操作手册和任务记录混放。
 - 除非用户明确要求，不创建二级业务子目录。
 - 若现有项目结构与本规范冲突，优先保留用户已有内容，并在结果中标注差异。
-- 根目录固定使用 `project`。
+- `project` 指当前工作空间本身，不额外创建同名父目录。
 - 文档文件名默认使用 `README.md` 与 `Agents.md`。
 - 目录命名固定使用以下名称：`archives`、`inbox`、`codebase`、`knowledge-base`、`runbook`、`documents`、`references`、`tasks`、`assets`。
 
@@ -95,45 +94,45 @@ project/
 
 # 快速检查清单
 - [ ] frontmatter 仅包含 `name` 和 `description`
-- [ ] `project/` 标准结构完整
+- [ ] 当前工作空间下的标准结构完整
 - [ ] `codebase/` 被明确指定为开发内容唯一归档目录
 - [ ] `inbox/` 与 `archives/` 职责明确
 - [ ] 输出包含已处理、已存在、未处理项
-- [ ] 未擅自扩展额外目录层级
+- [ ] 未额外创建 `project/` 父目录或其他未定义层级
 
 # 示例
 ## 示例 1：标准场景
 输入：
-- 项目根目录：`/project/demo`
+- 当前工作空间：`/project/demo`
 - 操作目标：`init`
 
 输出：
+- 已确认：以当前工作空间 `/project/demo` 作为 project 根目录
 - 已创建：
-  - `project/`
-  - `project/archives/`
-  - `project/inbox/`
-  - `project/codebase/`
-  - `project/knowledge-base/`
-  - `project/runbook/`
-  - `project/documents/`
-  - `project/references/`
-  - `project/tasks/`
-  - `project/assets/`
-  - `project/README.md`
-  - `project/Agents.md`
+  - `archives/`
+  - `inbox/`
+  - `codebase/`
+  - `knowledge-base/`
+  - `runbook/`
+  - `documents/`
+  - `references/`
+  - `tasks/`
+  - `assets/`
+  - `README.md`
+  - `Agents.md`
 - 未处理项：无
 
 ## 示例 2：异常场景
 输入：
-- 项目根目录：`/project/demo`
+- 当前工作空间：`/project/demo`
 - 操作目标：`audit`
-- 现状：已有 `project/docs/`，缺少 `project/documents/`
+- 现状：已有 `docs/`，缺少 `documents/`
 
 输出：
 - 检查结果：
-  - 缺少 `project/documents/`
-  - 存在非标准命名 `project/docs/`
+  - 缺少 `documents/`
+  - 存在非标准命名 `docs/`
 - 建议：
-  - 新建 `project/documents/`
+  - 新建 `documents/`
   - 将正式文档逐步从 `docs/` 迁移到 `documents/`
   - 保留原目录，避免直接覆盖
