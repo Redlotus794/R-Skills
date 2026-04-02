@@ -15,6 +15,8 @@ todo/
 ├── discard/      # 已取消任务
 ├── completed/    # 已完成任务
 ├── archive/      # 历史简报归档
+   ├── report-yyyy # 简报归档目录
+   ├── tasks-yyyy # 任务归档目录
 └── report_*.md   # 最新任务简报
 
 references/
